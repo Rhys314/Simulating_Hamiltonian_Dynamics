@@ -17,6 +17,11 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Data files
+*.pickle
+*.csv
+*.dat
+
 # =========================
 # Operating System Files
 # =========================
