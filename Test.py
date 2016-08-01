@@ -8,7 +8,7 @@ import numpy as np
 from mayavi import mlab
 
 
-def plot3D(name, X, Y, Z):
+def plot3D(name, X, Y, Z, zlabel):
     """
     Plots a 3d surface plot of Z using the mayavi mlab.mesh function.
 
@@ -22,6 +22,7 @@ def plot3D(name, X, Y, Z):
         The y-axis data.
     Z: 2d nd array
         The z-axis data.
+    zlabel: The title that appears on the z-axis.
     """
     mlab.figure(name)
     mlab.clf()
@@ -32,6 +33,9 @@ def plot3D(name, X, Y, Z):
     mlab.axes(plotData, ranges=[np.min(X), np.max(X),
                                 np.min(Y), np.max(Y),
                                 np.min(Z), np.max(Z)])
+    mlab.xlabel('Space (x)')
+    mlab.ylabel('Time (t)')
+    mlab.zlabel(zlabel)
 
 
 def initialU(x, L, c):
@@ -132,12 +136,7 @@ def dminus(z, zminus, Delta):
     """
     return (z - zminus)/Delta
 
-for nn in range(0, len(t) - 1):
-    for ii in range(0, len(x) - 1):
-        
-    
-
-for nn in range(0, len(t) - 1):
+for nn in range(1, len(t) - 1):
     for ii in range(0, len(x) - 1):
         # takes care of cyclic boundary conditions
         iiminus = ii - 1
@@ -147,12 +146,13 @@ for nn in range(0, len(t) - 1):
         if (ii == len(x) - 1):
             iiplus = 0
         # step
-        v[nn + 1, ii] = v[nn, ii] + \
-            Dt*((u[nn, iiplus] - 2*u[nn, ii] + u[nn, iiminus])/Dx**2 -
-                np.sin(u[nn, ii]))
-        u[nn + 1, ii] = u[nn, ii] + Dt*v[nn + 1, ii]
+        v[nn, ii] = v[nn - 1, ii] + \
+            Dt*((u[nn - 1, iiplus] - 2*u[nn - 1, ii] + u[nn - 1, iiminus])/Dx**2 -
+                np.sin(u[nn - 1, ii]))
+        u[nn, ii] = u[nn - 1, ii] + Dt*v[nn, ii]
 
 # %% plot
-X, T = np.meshgrid(x, t)
-plot3D('Spatial Distribution', X, T, u)
-plot3D('Velocity Distribution', X, T, v)
+cutoff = T/Dt*0.1
+xx, tt = np.meshgrid(x, t[:cutoff])
+plot3D('Spatial Distribution', xx, tt, u[:cutoff, :], 'Wavefunction (u)')
+plot3D('Velocity Distribution', xx, tt, v[:cutoff, :], 'Velcocity (v)')

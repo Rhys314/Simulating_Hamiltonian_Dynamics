@@ -10,7 +10,7 @@ import numpy as np
 from mayavi import mlab
 
 
-def plot3D(name, X, Y, Z):
+def plot3D(name, X, Y, Z, zlabel):
     """
     Plots a 3d surface plot of Z using the mayavi mlab.mesh function.
 
@@ -24,6 +24,7 @@ def plot3D(name, X, Y, Z):
         The y-axis data.
     Z: 2d nd array
         The z-axis data.
+    zlabel: The title that appears on the z-axis.
     """
     mlab.figure(name)
     mlab.clf()
@@ -34,3 +35,6 @@ def plot3D(name, X, Y, Z):
     mlab.axes(plotData, ranges=[np.min(X), np.max(X),
                                 np.min(Y), np.max(Y),
                                 np.min(Z), np.max(Z)])
+    mlab.xlabel('Space ($x$)')
+    mlab.ylabel('Time ($t$)')
+    mlab.zlabel(zlabel)
