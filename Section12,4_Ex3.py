@@ -98,8 +98,8 @@ def update_line(num, x, y, line):
     line.set_data(x, y[num, :])
     return line,
 
-full = True
-reduced = True
+full = False
+reduced = False
 L = 60.0
 c = 0.5
 T = 200.0
@@ -122,7 +122,7 @@ residual = np.zeros((len(t), len(x)))
 
 # %% calculate
 for nn in range(0, len(t) - 1):
-    for ii in range(0, len(x) - 1):
+    for ii in range(0, len(x)):
         # takes care of cyclic boundary conditions
         iiminus = ii - 1
         if ii == 0:
@@ -202,6 +202,6 @@ line_ani_res = animation.FuncAnimation(fig, update_line,
 
 # 3d plot
 X, T = np.meshgrid(x, t)
-plot3D('Spatial Distribution', X, T, u)
-plot3D('Velocity Distribution', X, T, v)
-plot3D('Residual Distribution', X, T, residual)
+plot3D('Spatial Distribution', X, T, u, 'Wavefunction (u)')
+plot3D('Velocity Distribution', X, T, v, 'Velocity (v)')
+plot3D('Residual Distribution', X, T, residual, 'Energy Resudual (E)')

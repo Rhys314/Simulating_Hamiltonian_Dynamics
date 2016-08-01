@@ -56,7 +56,7 @@ class eulerBoxStep:
         """
         # calculate time step
         v_next = v + \
-            self.Dt*((u[2] - 2*u[1] + u[0])/self.Dx**2 - self.fPrime(u[1]))
+            self.Dt*((u[2] - 2*u[1] + u[0])/self.Dx**2 + self.fPrime(u[1]))
         u_next = u[1] + self.Dt*v_next
 
         return u_next, v_next
